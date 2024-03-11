@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Segment Intersection</title>
+        <style>
+            body {
+                margin: 0;
+                overflow: hidden;
+            }
+        </style>
+    </head>
+
+    <body>
+        <canvas></canvas>
+        <script>
+            const canvas = document.querySelector('canvas')
+            canvas.width = window.innerWidth
+            canvas.height = window.innerHeight
+            const ctx = canvas.getContext('2d')
+
+            const A = {
+                x: 200,
+                y: 150,
+            }
+            const B = {
+                x: 150,
+                y: 250,
+            }
+            const C = {
+                x: 50,
+                y: 100,
+            }
+            const D = {
+                x: 250,
+                y: 200,
+            }
+
+            animate()
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height)
+                ctx.beginPath()
+                ctx.moveTo(A.x, A.y)
+                ctx.lineTo(B.x, B.y)
+                ctx.moveTo(C.x, C.y)
+                ctx.lineTo(D.x, D.y)
+                ctx.stroke()
+
+                const I = calcIntersection(A, B, C, D)
+                drawPointWithText(A, 'A')
+                drawPointWithText(B, 'B')
+                drawPointWithText(C, 'C')
+                drawPointWithText(D, 'D')
+                drawPointWithText(I, 'I')
+
+                requestAnimationFrame(animate)
+            }
+
+            function drawPointWithText(point, label, size = 10) {
+                ctx.beginPath()
+                ctx.strokeStyle = 'black'
+                ctx.fillStyle = 'white'
+                ctx.arc(point.x, point.y, size, 0, Math.PI * 2)
+                ctx.fill()
+                ctx.stroke()
+
+                ctx.fillStyle = 'black'
+                ctx.font = 'bold 14px Arial'
+                ctx.textAlign = 'center'
+                ctx.textBaseline = 'middle'
+                ctx.fillText(label, point.x, point.y)
+            }
+
+            function calcIntersection(A, B, C, D) {
+                /* 
+          Ix = Ax + (Bx - Ax) * t = Cx + (Dx- Cx) * u
+          (Ax -Cx) + (Bx - Ax) * t = (Dx - Cx) * u
+
+          Iy = Ay + (By - Ay) * t = Cy + (Dy- Cy) * u
+          (Ay - Cy) + (By - Ay) * t = (Dy - Cy) * u | * (Dx - Cx)
+
+          (Ay-Cy)(Dx-Cx) + (By-Ay)(Dx-Cx) * t = (Dy-Cy)(Dx-Cx) * u
+
+          ===>    = (Dy-Cy)(Ax-Cx) + (Dy-Cy)(Bx-Ax) * t
+          ====> t = (Ay-Cy)(Dx-Cx) - (Dy-Cy)(Ax-Cx)
+                    / (Dy-Cy)(Bx-Ax) - (By-Ay)(Dx-Cx)
+        */
+                const top =
+                    (A.y - C.y) * (D.x - C.x) - (D.y - C.y) * (A.x - C.x)
+                const bottom =
+                    (D.y - C.y) * (B.x - A.x) - (B.y - A.y) * (D.x - C.x)
+                const t = top / bottom
+
+                return {
+                    x: lerp(A.x, B.x, t),
+                    y: lerp(A.y, B.y, t),
+                }
+            }
+
+            function lerp(a, b, t) {
+                return a + (b - a) * t
+            }
+        </script>
+    </body>
+</html>
