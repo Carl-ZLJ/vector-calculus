@@ -11,6 +11,8 @@
                 overflow: hidden;
             }
         </style>
+        <script src="draw.js"></script>
+        <script src="math.js"></script>
     </head>
 
     <body>
@@ -110,19 +112,6 @@
                 ctx.fillText(label, pos.x, pos.y)
             }
 
-            function lerp(a, b, t) {
-                return a + (b - a) * t
-            }
-
-            function vLerp(o1, o2, t) {
-                const ret = {}
-                for (const attr in o1) {
-                    if (Object.hasOwnProperty.call(o1, attr)) {
-                        ret[attr] = lerp(o1[attr], o2[attr], t)
-                    }
-                }
-                return ret
-            }
         </script>
     </body>
 </html>

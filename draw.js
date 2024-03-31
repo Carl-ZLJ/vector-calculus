@@ -1,8 +1,3 @@
-// 2D Vectors Video
-// https://youtu.be/nzyOCd9FcCA
-
-const ctx = myCanvas.getContext('2d')
-
 function clear() {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 }
@@ -32,21 +27,20 @@ function drawArrow(tip, tail = { x: 0, y: 0 }, color = 'white', size = 20) {
     ctx.restore()
 }
 
-// Videos like: Segment Intersection, Trigonometry and Distance without Pythagoras
-// https://youtu.be/fHOLQJo0FjQ
-// https://youtu.be/xK3vKWMFVgw
-// https://youtu.be/fEq-edH2iYE
-
 function drawDot(pos, label) {
     ctx.save()
     ctx.beginPath()
+    ctx.strokeStyle = 'black'
     ctx.fillStyle = 'white'
-    ctx.arc(pos.x, pos.y, 3, 0, Math.PI * 2)
+    ctx.arc(pos.x, pos.y, 10, 0, Math.PI * 2)
     ctx.fill()
-    ctx.font = '20px Arial'
-    ctx.textBaseline = 'hanging'
+    ctx.stroke()
+
+    ctx.font = '15px Arial'
+    ctx.fillStyle = 'black'
+    ctx.textBaseline = 'middle'
     ctx.textAlign = 'center'
-    ctx.fillText(label, pos.x - 10, pos.y + 6)
+    ctx.fillText(label, pos.x, pos.y)
     ctx.restore()
 }
 
