@@ -2,7 +2,7 @@
 
 - Vector
   - [x] Euclidean coordinate to Polar coordinate System 
-  - [x] add, substract, scale, normalize 
+  - [x] add, subtract, scale, normalize 
   - [x] magnitude, direction, dot product, cross product
 - Linear Interpolation
 - Segment Intersection

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Dot to Segment Distance</title>
+        <script src="math.js"></script>
+        <script src="draw.js"></script>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+            canvas {
+                background-color: black;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas></canvas>
+        <script>
+            const canvas = document.querySelector('canvas')
+            canvas.width = window.innerWidth
+            canvas.height = window.innerHeight
+            const ctx = canvas.getContext('2d')
+
+            const A = {
+                x: 100,
+                y: 200,
+            }
+            const B = {
+                x: 400,
+                y: 300,
+            }
+            const M = {
+                x: 250,
+                y: 250,
+            }
+
+            window.addEventListener('mousemove', (e) => {
+                M.x = e.offsetX
+                M.y = e.offsetY
+
+                redrawAll()
+            })
+
+            window.addEventListener('click', (e) => {
+                A.x = e.offsetX
+                A.y = e.offsetY
+
+                redrawAll()
+            })
+
+            window.addEventListener('contextmenu', (e) => {
+                B.x = e.offsetX
+                B.y = e.offsetY
+                e.preventDefault()
+
+                redrawAll()
+            })
+
+
+            redrawAll()
+
+            function redrawAll() {
+                clear()
+
+                drawSegment(A, B)
+                drawDot(A, 'A')
+                drawDot(B, 'B')
+                drawDot(M, 'M')
+
+                const res = distanceFromPointToSegment(M, A, B)
+                drawArrow(res.point, M)
+                drawText(res.value)
+            }
+
+            function distanceFromPointToSegment(M, A, B) {
+                const { P, t } = projectPointToSegment(M, A, B)
+
+                if (t > 0 && t < 1) {
+                    return {
+                        point: P,
+                        value: distance(P, M),
+                    }
+                } else {
+                    const disToA = distance(A, M)
+                    const disToB = distance(B, M)
+                    if (disToA < disToB) {
+                        return {
+                            point: A,
+                            value: distance(A, M),
+                        }
+                    } else {
+                        return {
+                            point: B,
+                            value: distance(B, M),
+                        }
+                    }
+                }
+            }
+
+            function projectPointToSegment(M, A, B) {
+                const AB = subtract(B, A)
+
+                const AM = subtract(M, A)
+
+                const nAB = normalize(AB)
+                const scaler = dot(AM, nAB)
+                const t = dot(AM, nAB) / distance(A, B)
+
+                const P = add(A, scale(nAB, scaler))
+
+                return {
+                    P,
+                    t,
+                }
+            }
+        </script>
+    </body>
+</html>

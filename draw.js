@@ -22,12 +22,12 @@ function drawArrow(tip, tail = { x: 0, y: 0 }, color = 'white', size = 20) {
     ctx.lineTo(t2.x, t2.y)
     ctx.closePath()
     ctx.stroke()
-    ctx.fillStyle = color
+    ctx.fillStyle = 'red'
     ctx.fill()
     ctx.restore()
 }
 
-function drawDot(pos, label) {
+function drawDot(pos, label = '?') {
     ctx.save()
     ctx.beginPath()
     ctx.strokeStyle = 'black'
